@@ -236,7 +236,7 @@ http {
 }
 END
 	mkdir -p /home/vps/public_html
-	echo "<pre>Source by Mnm Ami | Donate via TrueMoney Wallet : 082-038-2600</pre>" > /home/vps/public_html/index.html
+	echo "<pre>Source  by ตุ๊ก | </pre>" > /home/vps/public_html/index.html
 	echo "<?phpinfo(); ?>" > /home/vps/public_html/info.php
 	args='$args'
 	uri='$uri'
@@ -352,7 +352,7 @@ END
 	fi
 
 
-	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Menu"
+	wget -O /usr/local/bin/menu "https://github.com/tokssa/test/blob/master/Menu"
 	chmod +x /usr/local/bin/menu
 	apt-get -y install vnstat
 	

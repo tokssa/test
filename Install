@@ -1052,7 +1052,7 @@ fi
 	0) # ==================================================================================================================
 
 rm -rf Install
-wget https://github.com/tokssa/test/blob/master/Install && chmod +x Install && bash Install
+wget https://raw.githubusercontent.com/tokssa/test/master/Install && chmod +x Install && bash Install
 
 	;;
 

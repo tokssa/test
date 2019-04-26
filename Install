@@ -70,7 +70,7 @@ echo "           สคริปโดย by ตุ๊ก"
 echo " "
 echo ""
 if  -e /usr/local/bin/Check-Thai ; then
-	echo -e "ฟังก์ชั่นสคริปท์ ${GRAY}✿.｡.:* *.:｡✿*ﾟ’ﾟ･✿.｡.:*${NC}"
+	echo -e "ฟังก์ชั่นสคริปท์ ${GRAY}${NC}"
 	echo ""
 	if  -e /etc/openvpn/server.conf ; then
 		echo -e "|${GRAY} 1${NC}| ถอนการติดตั้ง OPENVPN ที่ควบคุมการใช้งานผ่านเทอร์มินอล ${GREEN} ✔   ${NC}"
@@ -102,7 +102,7 @@ if  -e /usr/local/bin/Check-Thai ; then
 	read -p "เลือกหัวข้อฟังก์ชั่นที่ต้องการใช้งาน : " FUNCTIONSCRIPT
 
 elif  ! -e /usr/local/bin/Check-Thai ; then
-	echo -e "FUNCTION SCRIPT ${GRAY}✿.｡.:* *.:｡✿*ﾟ’ﾟ･✿.｡.:*${NC}"
+	echo -e "FUNCTION SCRIPT ${GRAY}${NC}"
 	echo ""
 	if  -e /etc/openvpn/server.conf ; then
 		echo -e "|${GRAY} 1${NC}| REMOVE OPENVPN TERMINAL CONTROL ${GREEN} ✔   ${NC}"
@@ -586,9 +586,9 @@ END
 
 fi
 
-	wget -O /usr/local/bin/menu "https://github.com/tokssa/test/blob/master/Menu"
+	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/tokssa/test/master/Menu"
 	chmod +x /usr/local/bin/menu
-	wget -O /usr/local/bin/Auto-Delete-Client "https://github.com/tokssa/test/blob/master/Auto-Delete-Client"
+	wget -O /usr/local/bin/Auto-Delete-Client "https://raw.githubusercontent.com/tokssa/test/master/Auto-Delete-Client"
 	chmod +x /usr/local/bin/Auto-Delete-Client 
 	apt-get -y install vnstat
 	cd /etc/openvpn/easy-rsa/

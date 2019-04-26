@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$EUID" -ne 0 ]]; then
+if  "$EUID" -ne 0 ; then
 	echo ""
 	echo "กรุณาเข้าสู่ระบบผู้ใช้ root ก่อนทำการใช้งานสคริปท์"
 	echo "คำสั่งเข้าสู่ระบบผู้ใช้ root คือ sudo -i"
@@ -8,7 +8,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit
 fi
 
-if [[ ! -e /dev/net/tun ]]; then
+if  ! -e /dev/net/tun ; then
 	echo ""
 	echo "TUN ไม่สามารถใช้งานได้"
 	exit
@@ -19,21 +19,21 @@ ln -fs /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
 
 clear
 # IP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
-# if [[ "$IP" = "" ]]; then
+# if  "$IP" = "" ; then
 IP=$(wget -4qO- "http://whatismyip.akamai.com/")
 # fi
 
-if [[ -e /etc/debian_version ]]; then
+if  -e /etc/debian_version ; then
 	OS=debian
 	VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
 	GROUPNAME=nogroup
 	RCLOCAL='/etc/rc.local'
 
-	if [[ "$VERSION_ID" != 'VERSION_ID="7"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="8"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="9"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="14.04"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="16.04"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="17.04"' ]]; then
+	if  "$VERSION_ID" != 'VERSION_ID="7"'  &&  "$VERSION_ID" != 'VERSION_ID="8"'  &&  "$VERSION_ID" != 'VERSION_ID="9"'  &&  "$VERSION_ID" != 'VERSION_ID="14.04"'  &&  "$VERSION_ID" != 'VERSION_ID="16.04"'  &&  "$VERSION_ID" != 'VERSION_ID="17.04"' ; then
 		echo ""
-		echo "  (\_(\ "
-		echo " (=’ :’) :* Script by Mnm Ami"
-		echo "  (,(”)(”) °.¸¸.•"
+		echo "   "
+		echo "         สคริปโดย by ตุ๊ก"
+		echo "  "
 		echo ""
 		echo "เวอร์ชั่น OS ของคุณเป็นเวอร์ชั่นที่ยังไม่รองรับ"
 		echo "สำหรับเวอร์ชั่นที่รองรับได้ จะมีดังนี้..."
@@ -45,9 +45,9 @@ if [[ -e /etc/debian_version ]]; then
 	fi
 else
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo " "
+	echo "             สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
 	echo "OS ที่คุณใช้ไม่สามารถรองรับได้กับสคริปท์นี้"
 	echo "สำหรับ OS ที่รองรับได้ จะมีดังนี้..."
@@ -65,14 +65,14 @@ NC='\033[0m'
 
 # Menu
 echo ""
-echo "  (\_(\ "
-echo " (=’ :’) :* Script by Mnm Ami"
-echo "  (,(”)(”) °.¸¸.•"
 echo ""
-if [[ -e /usr/local/bin/Check-Thai ]]; then
-	echo -e "ฟังก์ชั่นสคริปท์ ${GRAY}✿.｡.:* *.:｡✿*ﾟ’ﾟ･✿.｡.:*${NC}"
+echo "           สคริปโดย by ตุ๊ก"
+echo " "
+echo ""
+if  -e /usr/local/bin/Check-Thai ; then
+	echo -e "ฟังก์ชั่นสคริปท์ ${GRAY}${NC}"
 	echo ""
-	if [[ -e /etc/openvpn/server.conf ]]; then
+	if  -e /etc/openvpn/server.conf ; then
 		echo -e "|${GRAY} 1${NC}| ถอนการติดตั้ง OPENVPN ที่ควบคุมการใช้งานผ่านเทอร์มินอล ${GREEN} ✔   ${NC}"
 	else
 		echo -e "|${GRAY} 1${NC}| ติดตั้ง OPENVPN ที่ควบคุมการใช้งานผ่านเทอร์มินอล ${GREEN} ✔   ${NC}"
@@ -80,17 +80,17 @@ if [[ -e /usr/local/bin/Check-Thai ]]; then
 	echo -e "|${GRAY} 2${NC}| ติดตั้ง OPENVPN ที่ควบคุมการใช้งานผ่าน PRITUNL ${GREEN} ✔   ${NC}"
 	echo -e "|${GRAY} 3${NC}| ติดตั้ง SSH DROPBEAR ${GREEN} ✔   ${NC}"
 	echo -e "|${GRAY} 4${NC}| ติดตั้ง WEB PANEL ${GRAY} ✖   ${NC}"
-	if [[ "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
-		if [[ ! -e /etc/squid3/squid.conf ]]; then
+	if  "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
+		if  ! -e /etc/squid3/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| ติดตั้ง SQUID PROXY ${GREEN} ✔   ${NC}"
-		elif [[ -e /etc/squid3/squid.conf ]]; then
+		elif  -e /etc/squid3/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| ถอนการติดตั้ง SQUID PROXY ${GREEN} ✔   ${NC}"
 		fi
 
-	elif [[ "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
-		if [[ ! -e /etc/squid/squid.conf ]]; then
+	elif  "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ; then
+		if  ! -e /etc/squid/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| ติดตั้ง SQUID PROXY ${GREEN} ✔   ${NC}"
-		elif [[ -e /etc/squid/squid.conf ]]; then
+		elif  -e /etc/squid/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| ถอนการติดตั้ง SQUID PROXY ${GREEN} ✔   ${NC}"
 		fi
 	fi
@@ -101,10 +101,10 @@ if [[ -e /usr/local/bin/Check-Thai ]]; then
 	echo ""
 	read -p "เลือกหัวข้อฟังก์ชั่นที่ต้องการใช้งาน : " FUNCTIONSCRIPT
 
-elif [[ ! -e /usr/local/bin/Check-Thai ]]; then
-	echo -e "FUNCTION SCRIPT ${GRAY}✿.｡.:* *.:｡✿*ﾟ’ﾟ･✿.｡.:*${NC}"
+elif  ! -e /usr/local/bin/Check-Thai ; then
+	echo -e "FUNCTION SCRIPT ${GRAY}${NC}"
 	echo ""
-	if [[ -e /etc/openvpn/server.conf ]]; then
+	if  -e /etc/openvpn/server.conf ; then
 		echo -e "|${GRAY} 1${NC}| REMOVE OPENVPN TERMINAL CONTROL ${GREEN} ✔   ${NC}"
 	else
 		echo -e "|${GRAY} 1${NC}| INSTALL OPENVPN TERMINAL CONTROL ${GREEN} ✔   ${NC}"
@@ -112,17 +112,17 @@ elif [[ ! -e /usr/local/bin/Check-Thai ]]; then
 	echo -e "|${GRAY} 2${NC}| INSTALL OPENVPN PRITUNL CONTROL ${GREEN} ✔   ${NC}"
 	echo -e "|${GRAY} 3${NC}| INSTALL SSH DROPBEAR ${GREEN} ✔   ${NC}"
 	echo -e "|${GRAY} 4${NC}| INSTALL WEB PANEL ${GRAY} ✖   ${NC}"
-	if [[ "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
-		if [[ ! -e /etc/squid3/squid.conf ]]; then
+	if  "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
+		if  ! -e /etc/squid3/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| INSTALL SQUID PROXY ${GREEN} ✔   ${NC}"
-		elif [[ -e /etc/squid3/squid.conf ]]; then
+		elif  -e /etc/squid3/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| REMOVE SQUID PROXY ${GREEN} ✔   ${NC}"
 		fi
 
-	elif [[ "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
-		if [[ ! -e /etc/squid/squid.conf ]]; then
+	elif  "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ; then
+		if  ! -e /etc/squid/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| INSTALL SQUID PROXY ${GREEN} ✔   ${NC}"
-		elif [[ -e /etc/squid/squid.conf ]]; then
+		elif  -e /etc/squid/squid.conf ; then
 			echo -e "|${GRAY} 5${NC}| REMOVE SQUID PROXY ${GREEN} ✔   ${NC}"
 		fi
 	fi
@@ -154,11 +154,11 @@ newclient () {
 	echo "</tls-auth>" >> ~/$1.ovpn
 }
 
-if [[ -e /etc/openvpn/server.conf ]]; then
+if  -e /etc/openvpn/server.conf ; then
 	echo ""
-	read -p "ต้องการถอนการติดตั้ง OpenVPN หรือไม่  (Y or N): " -e -i N REMOVE
+	read -p "ต้องการถอนการติดตั้ง OpenVPN หรือไม่  (Y or N): " -e -i Y REMOVE
 
-	if [[ "$REMOVE" = 'Y' ]]; then
+	if  "$REMOVE" = 'Y' ; then
 		PORT=$(grep '^port ' /etc/openvpn/server.conf | cut -d " " -f 2)
 		PROTOCOL=$(grep '^proto ' /etc/openvpn/server.conf | cut -d " " -f 2)
 		if pgrep firewalld; then
@@ -184,7 +184,7 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 		fi
 		if hash sestatus 2>/dev/null; then
 			if sestatus | grep "Current mode" | grep -qs "enforcing"; then
-				if [[ "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ]]; then
+				if  "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ; then
 					semanage port -d -t openvpn_port_t -p $PROTOCOL $PORT
 				fi
 			fi
@@ -195,14 +195,14 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 		rm -rf /etc/openvpn
 		rm -rf /usr/local/bin/*
 		echo ""
-		read -p "ต้องการลบข้อมูลบัญชีทั้งหมดหรือไม่ (Y or N) : " -e -i N DELETEACCOUNT
-		if [[ "$DELETEACCOUNT" = "Y" ]]; then
+		read -p "ต้องการลบข้อมูลบัญชีทั้งหมดหรือไม่ (Y or N) : " -e -i Y DELETEACCOUNT
+		if  "$DELETEACCOUNT" = "Y" ; then
 			UIDN=1000
 			while read CHECKCLIENT
 			do
 				ACCOUNT="$(echo $CHECKCLIENT | cut -d: -f1)"
 				ID="$(echo $CHECKCLIENT | grep -v nobody | cut -d: -f3)"
-				if [[ $ID -ge $UIDN ]]; then
+				if  $ID -ge $UIDN ; then
 					userdel $ACCOUNT
 				fi
 			done < /etc/passwd
@@ -219,7 +219,7 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 	fi
 	exit
 
-# elif [[ -e /etc/apt/sources.list.d/pritunl.list ]]; then
+# elif  -e /etc/apt/sources.list.d/pritunl.list ; then
 # echo ""
 # echo "ไม่สามารถติดตั้ง OpenVPN ได้"
 # echo "เนื่องจาก IP นี้ได้ติดตั้ง OpenVPN ที่ควบคุมการใช้งานผ่าน PRITUNL ไปก่อนหน้านี้แล้ว"
@@ -248,7 +248,7 @@ else
 	echo -e " |${GRAY}1${NC}| DNS Current System"
 	echo -e " |${GRAY}2${NC}| DNS Google"
 	echo ""
-	read -p "DNS : " -e -i 1 DNS
+	read -p "DNS : " -e -i 2 DNS
 	echo ""
 	echo -e " |${GRAY}1${NC}| 1 ไฟล์เชื่อมต่อได้ 1 เครื่องเท่านั้น แต่สามารถสร้างไฟล์เพิ่มได้"
 	echo -e " |${GRAY}2${NC}| 1 ไฟล์เชื่อมต่อได้หลายเครื่อง แต่ต้องใช้ชื่อบัญชีและรหัสผ่านเพื่อใช้เชื่อมต่อ"
@@ -270,7 +270,7 @@ else
 	apt-get update
 	apt-get install openvpn iptables openssl ca-certificates -y
 
-	if [[ -d /etc/openvpn/easy-rsa/ ]]; then
+	if  -d /etc/openvpn/easy-rsa/ ; then
 		rm -rf /etc/openvpn/easy-rsa/
 	fi
 
@@ -338,7 +338,7 @@ crl-verify crl.pem" >> /etc/openvpn/server.conf
 		echo "client-to-client" >> /etc/openvpn/server.conf
 		;;
 		2)
-		if [[ "$VERSION_ID" = 'VERSION_ID="7"' ]]; then
+		if  "$VERSION_ID" = 'VERSION_ID="7"' ; then
 			echo "plugin /usr/lib/openvpn/openvpn-auth-pam.so /etc/pam.d/login" >> /etc/openvpn/server.conf
 			echo "client-cert-not-required" >> /etc/openvpn/server.conf
 			echo "username-as-common-name" >> /etc/openvpn/server.conf
@@ -367,7 +367,7 @@ crl-verify crl.pem" >> /etc/openvpn/server.conf
 		firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.8.0.0/24 ! -d 10.8.0.0/24 -j SNAT --to $IP
 		firewall-cmd --permanent --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.8.0.0/24 ! -d 10.8.0.0/24 -j SNAT --to $IP
 	else
-		if [[ "$OS" = 'debian' && ! -e $RCLOCAL ]]; then
+		if  "$OS" = 'debian' && ! -e $RCLOCAL ; then
 			echo '#!/bin/sh -e
 exit 0' > $RCLOCAL
 		fi
@@ -387,14 +387,14 @@ exit 0' > $RCLOCAL
 
 	if hash sestatus 2>/dev/null; then
 		if sestatus | grep "Current mode" | grep -qs "enforcing"; then
-			if [[ "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ]]; then
+			if  "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ; then
 				semanage port -a -t openvpn_port_t -p $PROTOCOL $PORT
 			fi
 		fi
 	fi
 
 	EXTERNALIP=$(wget -4qO- "http://whatismyip.akamai.com/")
-	if [[ "$IP" != "$EXTERNALIP" ]]; then
+	if  "$IP" != "$EXTERNALIP" ; then
 		echo ""
 		echo "ตรวจพบเบื้องหลังเซิฟเวอร์ของคุณเป็น Network Addrsss Translation (NAT)"
 		echo "NAT คืออะไร ? : http://www.greatinfonet.co.th/15396685/nat"
@@ -404,7 +404,7 @@ exit 0' > $RCLOCAL
 		echo "หรือหากไม่แน่ใจ กรุณาเปิดดูลิ้งค์ด้านบนเพื่อศึกษาข้อมูลเกี่ยวกับ (NAT)"
 		echo ""
 		read -p "External IP: " -e USEREXTERNALIP
-		if [[ "$USEREXTERNALIP" != "" ]]; then
+		if  "$USEREXTERNALIP" != "" ; then
 			IP=$USEREXTERNALIP
 		fi
 	fi
@@ -415,7 +415,9 @@ proto $PROTOCOL
 sndbuf 0
 rcvbuf 0
 remote $CLIENT 999 udp
-remote $IP:$PORT@anywhere.truevisions.tv.ps.line.naver.jp.coral.dtac.co.th $PORT
+remote $IP $POR
+http-proxy-retry
+http-proxy-option CUSTOM-HEADER X-Online-Host kd.truevisions.tv
 http-proxy $IP $PROXY
 resolv-retry infinite
 nobind
@@ -467,7 +469,7 @@ http {
 }
 END
 	mkdir -p /home/vps/public_html
-	echo "<pre>Source by Mnm Ami | Donate via TrueMoney Wallet : 082-038-2600</pre>" > /home/vps/public_html/index.html
+	echo "<pre>สคริปโดย by ตุ๊ก | </pre>" > /home/vps/public_html/index.html
 	echo "<?phpinfo(); ?>" > /home/vps/public_html/info.php
 	args='$args'
 	uri='$uri'
@@ -493,8 +495,8 @@ server {
 }
 END
 
-	if [[ "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
-		if [[ -e /etc/squid3/squid.conf ]]; then
+	if  "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
+		if  -e /etc/squid3/squid.conf ; then
 			apt-get -y remove --purge squid3
 		fi
 
@@ -530,7 +532,7 @@ refresh_pattern .               0       20%     4320
 END
 		IP2="s/xxxxxxxxx/$IP/g";
 		sed -i $IP2 /etc/squid3/squid.conf;
-		if [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
+		if  "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
 			service squid3 restart
 			/etc/init.d/openvpn restart
 			/etc/init.d/nginx restart
@@ -540,8 +542,8 @@ END
 			/etc/init.d/nginx restart
 		fi
 
-	elif [[ "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
-		if [[ -e /etc/squid/squid.conf ]]; then
+	elif  "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ; then
+		if  -e /etc/squid/squid.conf ; then
 			apt-get -y remove --purge squid
 		fi
 
@@ -584,9 +586,9 @@ END
 
 fi
 
-	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Menu"
+	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/tokssa/test/master/Menu"
 	chmod +x /usr/local/bin/menu
-	wget -O /usr/local/bin/Auto-Delete-Client "https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Auto-Delete-Client"
+	wget -O /usr/local/bin/Auto-Delete-Client "https://raw.githubusercontent.com/tokssa/test/master/Auto-Delete-Client"
 	chmod +x /usr/local/bin/Auto-Delete-Client 
 	apt-get -y install vnstat
 	cd /etc/openvpn/easy-rsa/
@@ -602,18 +604,18 @@ fi
 	esac
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "  "
+	echo "             สคริปโดย by ตุ๊ก"
+	echo " "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "OpenVPN, Squid Proxy, Nginx .....Install finish."
 	echo "IP Server : $IP"
 	echo "Port Server : $PORT"
-	if [[ "$PROTOCOL" = 'udp' ]]; then
+	if  "$PROTOCOL" = 'udp' ; then
 		echo "Protocal : UDP"
-	elif [[ "$PROTOCOL" = 'tcp' ]]; then
+	elif  "$PROTOCOL" = 'tcp' ; then
 		echo "Protocal : TCP"
 	fi
 	echo "Port Nginx : 85"
@@ -647,7 +649,7 @@ fi
 
 	2) # ==================================================================================================================
 
-if [[ -e /etc/openvpn/server.conf ]]; then
+if  -e /etc/openvpn/server.conf ; then
 	echo ""
 	echo "ไม่สามารถติดตั้ง Pritunl ได้"
 	echo "เนื่องจาก IP นี้ได้ติดตั้ง OpenVPN ที่ควบคุมการใช้งานผ่านเทอร์มินอลไปก่อนหน้านี้แล้ว"
@@ -656,7 +658,7 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 fi
 
 # Debian 8
-if [[ "$VERSION_ID" = 'VERSION_ID="8"' ]]; then
+if  "$VERSION_ID" = 'VERSION_ID="8"' ; then
 	echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.6 main" > /etc/apt/sources.list.d/mongodb-org-3.6.list
 	echo "deb http://repo.pritunl.com/stable/apt jessie main" > /etc/apt/sources.list.d/pritunl.list
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
@@ -666,13 +668,13 @@ if [[ "$VERSION_ID" = 'VERSION_ID="8"' ]]; then
 	systemctl start mongod pritunl
 	systemctl enable mongod pritunl
 
-		while [[ $Squid != "Y" && $NoSquid != "N" ]]; do
+		while  $Squid != "Y" && $NoSquid != "N" ; do
 			echo ""
 			read -p "ต้องการติดตั้ง Squid Proxy หรือไม่ (Y or N) : " -e -i Y Squid
 		done
 
 # Debian 9
-elif [[ "$VERSION_ID" = 'VERSION_ID="9"' ]]; then
+elif  "$VERSION_ID" = 'VERSION_ID="9"' ; then
 	echo "deb http://repo.pritunl.com/stable/apt stretch main" > /etc/apt/sources.list.d/pritunl.list
 	apt-get -y install dirmngr
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 7568D9BB55FF9E5287D586017AE645C0CF8E292A
@@ -681,13 +683,13 @@ elif [[ "$VERSION_ID" = 'VERSION_ID="9"' ]]; then
 	systemctl start mongodb pritunl
 	systemctl enable mongodb pritunl
 
-		while [[ $Squid != "Y" && $NoSquid != "N" ]]; do
+		while  $Squid != "Y" && $NoSquid != "N" ; do
 			echo ""
 			read -p "ต้องการติดตั้ง Squid Proxy หรือไม่ (Y or N) : " -e -i Y Squid
 		done
 
 # Ubuntu 14.04
-elif [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
+elif  "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
 	echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.6 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.6.list
 	echo "deb http://repo.pritunl.com/stable/apt trusty main" > /etc/apt/sources.list.d/pritunl.list
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
@@ -696,13 +698,13 @@ elif [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
 	apt-get --assume-yes install pritunl mongodb-org
 	service pritunl start
 
-		while [[ $Squid != "Y" && $NoSquid != "N" ]]; do
+		while  $Squid != "Y" && $NoSquid != "N" ; do
 			echo ""
 			read -p "ต้องการติดตั้ง Squid Proxy หรือไม่ (Y or N) : " -e -i Y Squid
 		done
 
 # Ubuntu 16.04
-elif [[ "$VERSION_ID" = 'VERSION_ID="16.04"' ]]; then
+elif  "$VERSION_ID" = 'VERSION_ID="16.04"' ; then
 	echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" > /etc/apt/sources.list.d/mongodb-org-3.6.list
 	echo "deb http://repo.pritunl.com/stable/apt xenial main" > /etc/apt/sources.list.d/pritunl.list
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
@@ -712,13 +714,13 @@ elif [[ "$VERSION_ID" = 'VERSION_ID="16.04"' ]]; then
 	systemctl start pritunl mongod
 	systemctl enable pritunl mongod
 
-		while [[ $Squid != "Y" && $NoSquid != "N" ]]; do
+		while  $Squid != "Y" && $NoSquid != "N" ; do
 			echo ""
 			read -p "ต้องการติดตั้ง Squid Proxy หรือไม่ (Y or N) : " -e -i Y Squid
 		done
 
 # Ubuntu 17.04
-elif [[ "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
+elif  "$VERSION_ID" = 'VERSION_ID="17.04"' ; then
 	echo "deb http://repo.pritunl.com/stable/apt zesty main" > /etc/apt/sources.list.d/pritunl.list
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 7568D9BB55FF9E5287D586017AE645C0CF8E292A
 	apt-get update
@@ -726,21 +728,21 @@ elif [[ "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
 	systemctl start pritunl mongodb
 	systemctl enable pritunl mongodb
 
-		while [[ $Squid != "Y" && $NoSquid != "N" ]]; do
+		while  $Squid != "Y" && $NoSquid != "N" ; do
 			echo ""
 			read -p "ต้องการติดตั้ง Squid Proxy หรือไม่ (Y or N) : " -e -i Y Squid
 		done
 
 fi
 
-if [[ "$NoSquid" = 'N' ]]; then
+if  "$NoSquid" = 'N' ; then
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "  "
+	echo "           สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "Pritunl .....Install Finish."
 	echo "No Proxy"
@@ -751,10 +753,10 @@ if [[ "$NoSquid" = 'N' ]]; then
 	echo ""
 	exit
 
-elif [[ "$Squid" = 'Y' ]]; then
+elif  "$Squid" = 'Y' ; then
 
-	if [[ "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
-		if [[ -e /etc/squid3/squid.conf ]]; then
+	if  "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
+		if  -e /etc/squid3/squid.conf ; then
 			apt-get -y remove --purge squid3
 		fi
 
@@ -793,14 +795,14 @@ refresh_pattern .               0       20%     4320
 END
 	IP2="s/xxxxxxxxx/$IP/g";
 	sed -i $IP2 /etc/squid3/squid.conf;
-		if [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
+		if  "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
 			service squid3 restart
 		else
 			/etc/init.d/squid3 restart
 		fi
 
-	elif [[ "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
-		if [[ -e /etc/squid/squid.conf ]]; then
+	elif  "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ; then
+		if  -e /etc/squid/squid.conf ; then
 			apt-get -y remove --purge squid
 		fi
 
@@ -847,11 +849,11 @@ fi
 
 clear
 echo ""
-echo "  (\_(\ "
-echo " (=’ :’) :* Script by Mnm Ami"
-echo "  (,(”)(”) °.¸¸.•"
+echo "   "
+echo "           สคริปโดย by ตุ๊ก"
+echo "  "
 echo ""
-echo "Donate via TrueMoney Wallet : 082-038-2600"
+echo ""
 echo ""
 echo "Pritunl, Squid Proxy .....Install Finish."
 echo "IP Proxy : $IP"
@@ -867,34 +869,34 @@ exit
 
 	3) # ==================================================================================================================
 
-if [[ -e /etc/default/dropbear ]]; then
+if  -e /etc/default/dropbear ; then
 	echo ""
 	echo "IP นี้ได้ติดตั้ง SSH Dropbear ไปก่อนหน้านี้แล้ว"
 	echo ""
 	exit
 
-elif [[ ! -e /etc/default/dropbear ]]; then
+elif  ! -e /etc/default/dropbear ; then
 	apt-get -y install dropbear
 	sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 	/etc/init.d/dropbear restart
 	PORTSSH=$(grep '^Port ' /etc/ssh/sshd_config | cut -d " " -f 2)
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo " "
+	echo "           สคริปโดย by ตุ๊ก"
+	echo " "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "SSH Dropbear .....Install Finish."
 	echo "IP Addrsss : $IP"
 	echo "Port SSH : $PORTSSH"
 	echo ""
-	if [[ -e /etc/squid3/squid.conf ]]; then
+	if  -e /etc/squid3/squid.conf ; then
 			PROXY=$(grep '^http_port ' /etc/squid3/squid.conf | cut -d " " -f 2)
 			echo "IP Proxy : $IP"
 			echo "Port Proxy : $PROXY"
-	elif [[ -e /etc/squid/squid.conf ]]; then
+	elif  -e /etc/squid/squid.conf ; then
 			PROXY=$(grep '^http_port ' /etc/squid/squid.conf | cut -d " " -f 2)
 			echo "IP Proxy : $IP"
 			echo "Port Proxy : $PROXY"
@@ -913,27 +915,27 @@ fi
 
 	5) # ==================================================================================================================
 
-if [[ -e /etc/squid3/squid.conf ]]; then
+if  -e /etc/squid3/squid.conf ; then
 	apt-get -y remove --purge squid3
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "  "
+	echo "            สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Removed."
 	exit
-elif [[ -e /etc/squid/squid.conf ]]; then
+elif  -e /etc/squid/squid.conf ; then
 	apt-get -y remove --purge squid
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "  "
+	echo "            สคริปโดย by ตุ๊ก"
+	echo " "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Removed."
 	exit
@@ -941,7 +943,7 @@ fi
 
 read -p "Port Proxy : " -e -i 8080 PROXY
 
-if [[ "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
+if  "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
 	apt-get -y install squid3
 	cat > /etc/squid3/squid.conf <<END
 http_port $PROXY
@@ -974,19 +976,19 @@ refresh_pattern .               0       20%     4320
 END
 	IP2="s/xxxxxxxxx/$IP/g";
 	sed -i $IP2 /etc/squid3/squid.conf;
-	if [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
+	if  "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
 		service squid3 restart
 	else
 		/etc/init.d/squid3 restart
 	fi
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo "              สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Source by Mnm Ami"
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo "สคริปโดย by ตุ๊ก"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Install finish."
 	echo "IP Proxy : $IP"
@@ -994,7 +996,7 @@ END
 	echo ""
 	exit
 
-elif [[ "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
+elif  "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ; then
 	apt-get -y install squid
 	cat > /etc/squid/squid.conf <<END
 http_port $PROXY
@@ -1030,12 +1032,12 @@ END
 	/etc/init.d/squid restart
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo "       สคริปโดย by ตุ๊ก"
+	echo " "
 	echo ""
-	echo "Source by Mnm Ami"
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo "สคริปโดย by ตุ๊ก"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Install finish."
 	echo "IP Proxy : $IP"
@@ -1050,15 +1052,15 @@ fi
 	0) # ==================================================================================================================
 
 rm -rf Install
-wget https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Install && chmod +x Install && bash Install
+wget https://raw.githubusercontent.com/tokssa/test/master/Install && chmod +x Install && bash Install
 
 	;;
 
 	00) # ==================================================================================================================
 
-if [[ -e /usr/local/bin/Check-Thai ]]; then
+if  -e /usr/local/bin/Check-Thai ; then
 	rm -f /usr/local/bin/Check-Thai
-elif [[ ! -e /usr/local/bin/Check-Thai ]]; then
+elif  ! -e /usr/local/bin/Check-Thai ; then
 	echo "Check Thai" >> /usr/local/bin/Check-Thai
 fi
 bash Install

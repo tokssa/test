@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$EUID" -ne 0 ]]; then
+if  "$EUID" -ne 0 ; then
 	echo ""
 	echo "กรุณาเข้าสู่ระบบผู้ใช้ root ก่อนทำการใช้งานสคริปท์"
 	echo "คำสั่งเข้าสู่ระบบผู้ใช้ root คือ sudo -i"
@@ -8,7 +8,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit
 fi
 
-if [[ ! -e /dev/net/tun ]]; then
+if  ! -e /dev/net/tun ; then
 	echo ""
 	echo "TUN ไม่สามารถใช้งานได้"
 	exit
@@ -20,13 +20,13 @@ ln -fs /usr/share/zoneinfo/Asia/Bangkok /etc/localtime
 clear
 IP=$(wget -4qO- "http://whatismyip.akamai.com/")
 
-if [[ -e /etc/debian_version ]]; then
+if  -e /etc/debian_version ; then
 	OS=debian
 	VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
 	GROUPNAME=nogroup
 	RCLOCAL='/etc/rc.local'
 
-	if [[ "$VERSION_ID" != 'VERSION_ID="8"' ]]; then
+	if  "$VERSION_ID" != 'VERSION_ID="8"' ; then
 		echo ""
 		echo "เวอร์ชั่น OS ของคุณเป็นเวอร์ชั่นที่ยังไม่รองรับ"
 		echo "สำหรับเวอร์ชั่นที่รองรับได้ จะมีดังนี้..."
@@ -52,7 +52,7 @@ NC='\033[0m'
 
 # Menu
 	echo ""
-	echo -e "ฟังก์ชั่นสคริปท์ ${GRAY}✿.｡.:* *.:｡✿*ﾟ’ﾟ･✿.｡.:*${NC}"
+	echo -e "ฟังก์ชั่นสคริปท์ ${GRAY}${NC}"
 	echo ""
 	echo -e "|${GRAY} 1${NC}| ติดตั้ง OPENVPN ที่ควบคุมการใช้งานผ่านเทอร์มินอล"
 	echo ""
@@ -111,7 +111,7 @@ newclient () {
 	apt-get update
 	apt-get install openvpn iptables openssl ca-certificates -y
 
-	if [[ -d /etc/openvpn/easy-rsa/ ]]; then
+	if  -d /etc/openvpn/easy-rsa/ ; then
 		rm -rf /etc/openvpn/easy-rsa/
 	fi
 
@@ -192,7 +192,7 @@ echo "username-as-common-name" >> /etc/openvpn/server.conf
 		firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.8.0.0/24 ! -d 10.8.0.0/24 -j SNAT --to $IP
 		firewall-cmd --permanent --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.8.0.0/24 ! -d 10.8.0.0/24 -j SNAT --to $IP
 	else
-		if [[ "$OS" = 'debian' && ! -e $RCLOCAL ]]; then
+		if  "$OS" = 'debian' && ! -e $RCLOCAL ; then
 			echo '#!/bin/sh -e
 exit 0' > $RCLOCAL
 		fi
@@ -212,14 +212,14 @@ exit 0' > $RCLOCAL
 
 	if hash sestatus 2>/dev/null; then
 		if sestatus | grep "Current mode" | grep -qs "enforcing"; then
-			if [[ "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ]]; then
+			if  "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ; then
 				semanage port -a -t openvpn_port_t -p $PROTOCOL $PORT
 			fi
 		fi
 	fi
 
 	EXTERNALIP=$(wget -4qO- "http://whatismyip.akamai.com/")
-	if [[ "$IP" != "$EXTERNALIP" ]]; then
+	if  "$IP" != "$EXTERNALIP" ; then
 		echo ""
 		echo "ตรวจพบเบื้องหลังเซิฟเวอร์ของคุณเป็น Network Addrsss Translation (NAT)"
 		echo "NAT คืออะไร ? : http://www.greatinfonet.co.th/15396685/nat"
@@ -229,7 +229,7 @@ exit 0' > $RCLOCAL
 		echo "หรือหากไม่แน่ใจ กรุณาเปิดดูลิ้งค์ด้านบนเพื่อศึกษาข้อมูลเกี่ยวกับ (NAT)"
 		echo ""
 		read -p "External IP: " -e USEREXTERNALIP
-		if [[ "$USEREXTERNALIP" != "" ]]; then
+		if  "$USEREXTERNALIP" != "" ; then
 			IP=$USEREXTERNALIP
 		fi
 	fi
@@ -313,7 +313,7 @@ server {
 END
 
 # Install Proxy
-if [[ -e /etc/squid3/squid.conf ]]; then
+if  -e /etc/squid3/squid.conf ; then
 	apt-get -y remove --purge squid3
 fi
 
@@ -355,7 +355,7 @@ sed -i $IP2 /etc/squid3/squid.conf;
 /etc/init.d/openvpn restart
 /etc/init.d/nginx restart
 
-	wget -O /usr/local/bin/menu "https://github.com/savat/test/blob/master/Menu"
+	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/tokssa/test/master/Menu"
 	chmod +x /usr/local/bin/menu
 	apt-get -y install vnstat
 	cd /etc/openvpn/easy-rsa/
@@ -369,9 +369,9 @@ sed -i $IP2 /etc/squid3/squid.conf;
 	echo "OpenVPN, Squid Proxy, Nginx .....Install finish."
 	echo "IP Server : $IP"
 	echo "Port Server : $PORT"
-	if [[ "$PROTOCOL" = 'udp' ]]; then
+	if  "$PROTOCOL" = 'udp' ; then
 		echo "Protocal : UDP"
-	elif [[ "$PROTOCOL" = 'tcp' ]]; then
+	elif  "$PROTOCOL" = 'tcp' ; then
 		echo "Protocal : TCP"
 	fi
 	echo "Port Nginx : 85"

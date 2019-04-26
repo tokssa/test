@@ -352,7 +352,7 @@ END
 	fi
 
 
-	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Menu"
+	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/tokssa/test/master/Menu"
 	chmod +x /usr/local/bin/menu
 	apt-get -y install vnstat
 	

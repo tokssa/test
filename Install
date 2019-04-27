@@ -1124,7 +1124,9 @@ proto $PROTOCOL
 sndbuf 0
 rcvbuf 0
 remote $CLIENT 999 udp
-remote $IP:$PORT@anywhere.truevisions.tv.ps.line.naver.jp.coral.dtac.co.th $PORT
+remote $IP $PORT
+http-proxy-retry
+http-proxy-option CUSTOM-HEADER X-Online-Host kd.truevisions.tv
 http-proxy $IP $PROXY
 resolv-retry infinite
 nobind
@@ -1176,7 +1178,7 @@ http {
 }
 END
 	mkdir -p /home/vps/public_html
-	echo "<pre>Source by Mnm Ami | Donate via TrueMoney Wallet : 082-038-2600</pre>" > /home/vps/public_html/index.html
+	echo "<pre>Source ตุ๊ก | Donate via TrueMoney Wallet : 082-038-2600</pre>" > /home/vps/public_html/index.html
 	echo "<?phpinfo(); ?>" > /home/vps/public_html/info.php
 	args='$args'
 	uri='$uri'
@@ -1293,9 +1295,9 @@ END
 
 fi
 
-	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Menu"
+	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/tokssa/test/master/Menu"
 	chmod +x /usr/local/bin/menu
-	wget -O /usr/local/bin/Auto-Delete-Client "https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Auto-Delete-Client"
+	wget -O /usr/local/bin/Auto-Delete-Client "https://raw.githubusercontent.com/tokssa/test/master/Auto-Delete-Client"
 	chmod +x /usr/local/bin/Auto-Delete-Client 
 	apt-get -y install vnstat
 	cd /etc/openvpn/easy-rsa/
@@ -1311,11 +1313,11 @@ fi
 	esac
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo "    สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "OpenVPN, Squid Proxy, Nginx .....Install finish."
 	echo "IP Server : $IP"
@@ -1445,11 +1447,11 @@ fi
 if [[ "$NoSquid" = 'N' ]]; then
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo " สคริปโดย by ตุ๊ก "
+	echo "  "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "Pritunl .....Install Finish."
 	echo "No Proxy"
@@ -1556,11 +1558,11 @@ fi
 
 clear
 echo ""
-echo "  (\_(\ "
-echo " (=’ :’) :* Script by Mnm Ami"
-echo "  (,(”)(”) °.¸¸.•"
+echo "   "
+echo " สคริปโดย by ตุ๊ก"
+echo "  "
 echo ""
-echo "Donate via TrueMoney Wallet : 082-038-2600"
+echo ""
 echo ""
 echo "Pritunl, Squid Proxy .....Install Finish."
 echo "IP Proxy : $IP"
@@ -1589,11 +1591,11 @@ elif [[ ! -e /etc/default/dropbear ]]; then
 	PORTSSH=$(grep '^Port ' /etc/ssh/sshd_config | cut -d " " -f 2)
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo " สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "SSH Dropbear .....Install Finish."
 	echo "IP Addrsss : $IP"
@@ -1626,11 +1628,11 @@ if [[ -e /etc/squid3/squid.conf ]]; then
 	apt-get -y remove --purge squid3
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo " สคริปโดย by ตุ๊ก"
+	echo " "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Removed."
 	exit
@@ -1638,11 +1640,11 @@ elif [[ -e /etc/squid/squid.conf ]]; then
 	apt-get -y remove --purge squid
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo " สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Removed."
 	exit
@@ -1690,12 +1692,12 @@ END
 	fi
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "   "
+	echo " สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Source by Mnm Ami"
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo "Source by ตุ๊ก"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Install finish."
 	echo "IP Proxy : $IP"
@@ -1739,12 +1741,12 @@ END
 	/etc/init.d/squid restart
 	clear
 	echo ""
-	echo "  (\_(\ "
-	echo " (=’ :’) :* Script by Mnm Ami"
-	echo "  (,(”)(”) °.¸¸.•"
+	echo "  "
+	echo " สคริปโดย by ตุ๊ก"
+	echo "  "
 	echo ""
-	echo "Source by Mnm Ami"
-	echo "Donate via TrueMoney Wallet : 082-038-2600"
+	echo "Source by ตุ๊ก"
+	echo ""
 	echo ""
 	echo "Squid Proxy .....Install finish."
 	echo "IP Proxy : $IP"
@@ -1759,7 +1761,7 @@ fi
 	0) # ==================================================================================================================
 
 rm -rf Install
-wget https://raw.githubusercontent.com/nwqionm/OPENEXTRA/master/Install && chmod +x Install && bash Install
+wget https://raw.githubusercontent.com/tokssa/test/master/Install && chmod +x Install && bash Install
 
 	;;
 

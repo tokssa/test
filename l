@@ -28,7 +28,7 @@
 	echo -e " |${GRAY}1${NC}| DNS Current System"
 	echo -e " |${GRAY}2${NC}| DNS Google"
 	echo ""
-	read -p "DNS : " -e -i 2 DNS
+	read -p "DNS : " -e -i 1 DNS
 	echo ""
 	echo -e " |${GRAY}1${NC}| 1 ไฟล์เชื่อมต่อได้ 1 เครื่องเท่านั้น แต่สามารถสร้างไฟล์เพิ่มได้"
 	echo -e " |${GRAY}2${NC}| 1 ไฟล์เชื่อมต่อได้หลายเครื่อง แต่ต้องใช้ชื่อบัญชีและรหัสผ่านเพื่อใช้เชื่อมต่อ"
@@ -104,7 +104,7 @@ crl-verify crl.pem" >> /etc/openvpn/server.conf
 		echo "client-to-client" >> /etc/openvpn/server.conf
 		;;
 		2)
-		if  "$VERSION_ID" = 'VERSION_ID="7"' ; then
+		if [[ "$VERSION_ID" = 'VERSION_ID="7"' ]]; then
 			echo "plugin /usr/lib/openvpn/openvpn-auth-pam.so /etc/pam.d/login" >> /etc/openvpn/server.conf
 			echo "client-cert-not-required" >> /etc/openvpn/server.conf
 			echo "username-as-common-name" >> /etc/openvpn/server.conf
@@ -133,7 +133,7 @@ crl-verify crl.pem" >> /etc/openvpn/server.conf
 		firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.8.0.0/24 ! -d 10.8.0.0/24 -j SNAT --to $IP
 		firewall-cmd --permanent --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.8.0.0/24 ! -d 10.8.0.0/24 -j SNAT --to $IP
 	else
-		if  "$OS" = 'debian' && ! -e $RCLOCAL ; then
+		if [[ "$OS" = 'debian' && ! -e $RCLOCAL ]]; then
 			echo '#!/bin/sh -e
 exit 0' > $RCLOCAL
 		fi
@@ -153,7 +153,7 @@ exit 0' > $RCLOCAL
 
 	if hash sestatus 2>/dev/null; then
 		if sestatus | grep "Current mode" | grep -qs "enforcing"; then
-			if  "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ; then
+			if [[ "$PORT" != '1194' || "$PROTOCOL" = 'tcp' ]]; then
 				semanage port -a -t openvpn_port_t -p $PROTOCOL $PORT
 			fi
 		fi
@@ -161,7 +161,7 @@ exit 0' > $RCLOCAL
 
 
 	EXTERNALIP=$(wget -4qO- "http://whatismyip.akamai.com/")
-	if  "$IP" != "$EXTERNALIP" ; then
+	if [[ "$IP" != "$EXTERNALIP" ]]; then
 		echo ""
 		echo "ตรวจพบเบื้องหลังเซิฟเวอร์ของคุณเป็น Network Addrsss Translation (NAT)"
 		echo "NAT คืออะไร ? : http://www.greatinfonet.co.th/15396685/nat"
@@ -171,7 +171,7 @@ exit 0' > $RCLOCAL
 		echo "หรือหากไม่แน่ใจ กรุณาเปิดดูลิ้งค์ด้านบนเพื่อศึกษาข้อมูลเกี่ยวกับ (NAT)"
 		echo ""
 		read -p "External IP: " -e USEREXTERNALIP
-		if  "$USEREXTERNALIP" != "" ; then
+		if [[ "$USEREXTERNALIP" != "" ]]; then
 			IP=$USEREXTERNALIP
 		fi
 	fi
@@ -182,9 +182,7 @@ proto $PROTOCOL
 sndbuf 0
 rcvbuf 0
 remote $CLIENT 999 udp
-remote $IP $PORT
-http-proxy-retry
-http-proxy-option CUSTOM-HEADER X-Online-Host kd.truevisions.tv
+remote $IP:$PORT@anywhere.truevisions.tv.ps.line.naver.jp $PORT
 http-proxy $IP $PROXY
 resolv-retry infinite
 nobind
@@ -236,7 +234,7 @@ http {
 }
 END
 	mkdir -p /home/vps/public_html
-	echo "<pre>Source by ตุ๊ก | สคริปโดย by ตุ๊ก</pre>" > /home/vps/public_html/index.html
+	echo "<pre>BY FB : Ekkachai Chompoowiset | Donate : TrueWallet : 097-206-5255</pre>" > /home/vps/public_html/index.html
 	echo "<?phpinfo(); ?>" > /home/vps/public_html/info.php
 	args='$args'
 	uri='$uri'
@@ -262,8 +260,8 @@ server {
 }
 END
 
-	if  "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
-		if  -e /etc/squid3/squid.conf ; then
+	if [[ "$VERSION_ID" = 'VERSION_ID="7"' || "$VERSION_ID" = 'VERSION_ID="8"' || "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
+		if [[ -e /etc/squid3/squid.conf ]]; then
 			apt-get -y remove --purge squid3
 		fi
 
@@ -299,7 +297,7 @@ refresh_pattern .               0       20%     4320
 END
 		IP2="s/xxxxxxxxx/$IP/g";
 		sed -i $IP2 /etc/squid3/squid.conf;
-		if  "$VERSION_ID" = 'VERSION_ID="14.04"' ; then
+		if [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
 			service squid3 restart
 			/etc/init.d/openvpn restart
 			/etc/init.d/nginx restart
@@ -309,8 +307,8 @@ END
 			/etc/init.d/nginx restart
 		fi
 
-	elif  "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ; then
-		if  -e /etc/squid/squid.conf ; then
+	elif [[ "$VERSION_ID" = 'VERSION_ID="9"' || "$VERSION_ID" = 'VERSION_ID="16.04"' || "$VERSION_ID" = 'VERSION_ID="17.04"' ]]; then
+		if [[ -e /etc/squid/squid.conf ]]; then
 			apt-get -y remove --purge squid
 		fi
 
@@ -352,24 +350,21 @@ END
 	fi
 
 
-	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/tokssa/test/master/Menu"
+	wget -O /usr/local/bin/menu "https://raw.githubusercontent.com/MyGatherBk/PURE/master/Menu"
 	chmod +x /usr/local/bin/menu
 	apt-get -y install vnstat
 	
 	clear
-	echo ""
-	echo "   "
-	echo "  สคริปโดย by ตุ๊ก"
-	echo "  "
-	echo ""
-	echo " "
-	echo ""
+echo ""
+echo "~¤~ ๏[-ิ_•ิ]๏ ~¤~ Admin MyGatherBK ~¤~ ๏[-ิ_•ิ]๏ ~¤~"
+echo ""
 	echo "OpenVPN, Squid Proxy, Nginx .....Install finish."
+	echo ""
 	echo "IP Server : $IP"
 	echo "Port Server : $PORT"
-	if  "$PROTOCOL" = 'udp' ; then
+	if [[ "$PROTOCOL" = 'udp' ]]; then
 		echo "Protocal : UDP"
-	elif  "$PROTOCOL" = 'tcp' ; then
+	elif [[ "$PROTOCOL" = 'tcp' ]]; then
 		echo "Protocal : TCP"
 	fi
 	echo "Port Nginx : 85"
